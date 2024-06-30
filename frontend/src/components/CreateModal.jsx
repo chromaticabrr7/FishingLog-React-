@@ -14,11 +14,13 @@ const schema = z.object({
 });
 
 function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) {
-    const [initialValues, setInitialValues] = useState(null);
+    // const [initialValues, setInitialValues] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const {
         register,
         handleSubmit,
         setError,
+        setValue,
         reset,
         formState,
         formState: {errors, isSubmitting, isSubmitSuccessful},
@@ -78,9 +80,19 @@ function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) 
         const findInitialValues = async () => {
             try {
                 if (isUpdate != null) {
-                    const response = await fetchLog(isUpdate); 
-                    console.log(response);
-                    setInitialValues(response);
+                    setIsLoading(true);
+                    await fetchLog(isUpdate)
+                        .then(response => {
+                            console.log(response);
+                            // setInitialValues(response);
+                            setValue('date', formatDateToYYYYMMDD(response.date));
+                            setValue('name', response.name);
+                            setValue('latitude', response.latitude);
+                            setValue('longitude', response.longitude);
+                            setValue('species', response.species);
+                        })
+                        .catch(error => console.error('Error fetching data:', error))
+                        .finally(() => setIsLoading(false));
                 }
             } catch (error) {
                 console.log(error);
@@ -88,8 +100,7 @@ function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) 
         }
 
         findInitialValues();
-        console.log(initialValues);
-    }, [isUpdate]);
+    }, [isUpdate, setValue]);
 
     const handleCancel = () => {
         onClose();
@@ -123,7 +134,7 @@ function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) 
                                     <h1 className="label-subheading">Subheading</h1>
                                 </div>
                             </div>
-                            <input {...register('date')} className="margin-bottom-sm calendar-icon" type="text" defaultValue={`${(initialValues?.date && isUpdate != null) ? formatDateToYYYYMMDD(initialValues?.date) : ''}`} placeholder="YYYY-MM-DD" id="enterDate"/>
+                            <input {...register('date')} className="margin-bottom-sm calendar-icon" type="text" placeholder="YYYY-MM-DD" id="enterDate"/>
                             {errors.date && (
                                 <div className="label">
                                     <div className="label-container">
@@ -141,7 +152,7 @@ function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) 
                                     <h1 className="label-subheading">Subheading</h1>
                                 </div>
                             </div>
-                            <input {...register('name')} className="margin-bottom-sm" type="text" defaultValue={`${(initialValues?.name && isUpdate != null) ? initialValues?.name : ''}`} placeholder="Blackhawk Park" id="enterName"/>
+                            <input {...register('name')} className="margin-bottom-sm" type="text" placeholder="Blackhawk Park" id="enterName"/>
                             {errors.name && (
                                 <div className="label">
                                     <div className="label-container">
@@ -159,7 +170,7 @@ function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) 
                                     <h1 className="label-subheading">Subheading</h1>
                                 </div>
                             </div>
-                            <input {...register('latitude')} className="margin-bottom-sm" type="text" defaultValue={`${(initialValues?.latitude && isUpdate != null) ? initialValues?.latitude : ''}`} placeholder="44.88592" id="enterLatitude"/>
+                            <input {...register('latitude')} className="margin-bottom-sm" type="text" placeholder="44.88592" id="enterLatitude"/>
                             {errors.latitude && (
                                 <div className="label">
                                     <div className="label-container">
@@ -177,7 +188,7 @@ function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) 
                                     <h1 className="label-subheading">Subheading</h1>
                                 </div>
                             </div>
-                            <input {...register('longitude')} className="margin-bottom-sm" type="text" defaultValue={`${(initialValues?.longitude && isUpdate != null) ? initialValues?.longitude : ''}`} placeholder="-93.18467" id="enterLongitude"/>
+                            <input {...register('longitude')} className="margin-bottom-sm" type="text" placeholder="-93.18467" id="enterLongitude"/>
                             {errors.longitude && (
                                 <div className="label">
                                     <div className="label-container">
@@ -195,7 +206,7 @@ function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) 
                                     <h1 className="label-subheading text-slate-500" style={{fontSize: "12px"}}>Separate entries with commas when entering</h1>
                                 </div>
                             </div>
-                            <input {...register('species')} className="margin-bottom-sm" type="text" defaultValue={`${(initialValues?.species && isUpdate != null) ? initialValues?.species : ''}`} placeholder="Pumpkinseed, Green Sunfish" id="enterSpecies"/>
+                            <input {...register('species')} className="margin-bottom-sm" type="text" placeholder="Pumpkinseed, Green Sunfish" id="enterSpecies"/>
                         </div>
                         <div className="modal-footer-container label margin-top-xl">
                             <div className="footer-left">
