@@ -2,9 +2,11 @@ import React, {useState, useEffect, useRef} from 'react';
 import { IconEyeglass2 } from '@tabler/icons-react';
 import { IconPencil } from '@tabler/icons-react';
 import { IconTrash } from '@tabler/icons-react';
+import { useToast } from '../../contexts/ToastContext';
 
 function TableActionMenu({id, isOpen, toggleActionMenu, fetchLogs, handleUpdatedData, toggleModal, setIsUpdate}) {
     const [actionMenuClass, setActionMenuClass] = useState('');
+    const addToast = useToast();
     let menuRef = useRef(null);
 
     const viewDetails = (id, toggleActionMenu) => {
@@ -27,6 +29,7 @@ function TableActionMenu({id, isOpen, toggleActionMenu, fetchLogs, handleUpdated
     
         if (response.ok) {
             console.log('Log successfully deleted');
+            addToast('Log deleted successfully!');
             setTimeout(() => {
                 const updatedLogs = fetchLogs();
                 handleUpdatedData(updatedLogs);

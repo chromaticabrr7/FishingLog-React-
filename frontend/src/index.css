@@ -211,7 +211,7 @@ p, h1, h2, h3, h4, h5, h6, th {
 }
 /* ALERT STYLES */
 
-.alert {
+.toast {
   position: fixed;
   display: flex;
   flex-direction: row;
@@ -229,16 +229,16 @@ p, h1, h2, h3, h4, h5, h6, th {
   pointer-events: none;
 }
 
-#alert svg {
+#toast svg {
  color: rgb(80, 192, 80);
 }
 
-.alert.show {
+.toast.show {
   transform: translateY(0);
   opacity: 1;
 }
 
-.alert-contents {
+.toast-contents {
   display: flex;
   flex-direction: column;
   gap: 4px;

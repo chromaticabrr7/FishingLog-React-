@@ -2,6 +2,7 @@ import WeatherHeader from './components/WeatherHeader.jsx'
 import Table from './components/Table/Table.jsx'
 import CreateModal from './components/CreateModal.jsx'
 import AppLoadingState from './components/LoadingStates/AppLoadingState.jsx';
+import Toast from './components/Toast/Toast.jsx';
 import React, {useState, useEffect} from 'react';
 import {fetchLogs, fetchWeatherData} from './services/api.js'
 
@@ -78,6 +79,7 @@ function App() {
 
     return(
         <>
+            {/* <Toast /> */}
             <AppLoadingState loading={loading} />
             <CreateModal show={showCreateModal} onClose={toggleCreateModal} handleUpdatedData={handleUpdatedData} setIsUpdate={setIsUpdate} isUpdate={isUpdate}/>
             <div className="wrapper" id="wrapper">
