@@ -90,8 +90,10 @@ export const deleteLog = async (id) => {
         setTimeout(() => {
             fetchLogs();
         }, 200);
+        return response;
     } else {
         console.log('Error deleting course');
+        return null;
     }
 }
 

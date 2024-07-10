@@ -3,6 +3,7 @@ import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useForm} from 'react-hook-form';
 import {fetchLogs, fetchLog, createLog, updateLog} from '../services/api'
+import { useToast } from '../contexts/ToastContext';
 import { formatDateToYYYYMMDD } from '../utils/helpers';
 
 const schema = z.object({
@@ -16,6 +17,7 @@ const schema = z.object({
 function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) {
     // const [initialValues, setInitialValues] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const addToast = useToast();
     const {
         register,
         handleSubmit,
@@ -40,11 +42,13 @@ function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) 
                 const response = await updateLog(data, isUpdate);
                 if (response.ok) {
                     console.log('Update submitted successfully');
+                    addToast('Update successful', 'The log you selected was successfully updated.', 'success');
                     onClose();
                     const updatedLogs = await fetchLogs();
                     handleUpdatedData(updatedLogs);
                 } else {
                     console.log('Error submitting form');
+                    addToast('Update unsuccessful', 'The log you selected failed to be updated.', 'error');
                 }
             } catch (error) {
                 console.error('Error submitting form', error);
@@ -54,11 +58,13 @@ function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) 
                 const response = await createLog(data);
                 if (response.ok) {
                     console.log('Form submitted successfully');
+                    addToast('Creation successful', 'The log you selected was successfully created.', 'success');
                     onClose();
                     const updatedLogs = await fetchLogs();
                     handleUpdatedData(updatedLogs);
                 } else {
                     console.error('Error submitting form');
+                    addToast('Create unsuccessful', 'The log submission could not be created.', 'error');
                 }
             } catch (error) {
                 console.error('Error submitting form', error);

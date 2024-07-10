@@ -3,8 +3,9 @@ import { IconEyeglass2 } from '@tabler/icons-react';
 import { IconPencil } from '@tabler/icons-react';
 import { IconTrash } from '@tabler/icons-react';
 import { useToast } from '../../contexts/ToastContext';
+import { deleteLog, fetchLogs } from '../../services/api';
 
-function TableActionMenu({id, isOpen, toggleActionMenu, fetchLogs, handleUpdatedData, toggleModal, setIsUpdate}) {
+function TableActionMenu({id, isOpen, toggleActionMenu, handleUpdatedData, toggleModal, setIsUpdate}) {
     const [actionMenuClass, setActionMenuClass] = useState('');
     const addToast = useToast();
     let menuRef = useRef(null);
@@ -19,25 +20,23 @@ function TableActionMenu({id, isOpen, toggleActionMenu, fetchLogs, handleUpdated
         setIsUpdate(id);
         toggleModal();
     }
-    
-    const deleteLog = async (id, toggleActionMenu, fetchLogs) => {
-        console.log('Delete log' , id);
-        
-        const response = await fetch(`http://localhost:4000/api/logs/${id}`, {
-            method: 'DELETE'
-        });
-    
+
+    const deleteProcess = async (id, toggleActionMenu) => {
+        console.log('Delete log', id);
+
+        const response = await deleteLog(id);
+
         if (response.ok) {
-            console.log('Log successfully deleted');
-            addToast('Log deleted successfully!');
+            addToast('Deletion successful', 'The log you selected was successfully deleted.', 'success');
             setTimeout(() => {
                 const updatedLogs = fetchLogs();
                 handleUpdatedData(updatedLogs);
             }, 200);
         } else {
             console.log('Error deleting course');
+            addToast('Error deleting course');
         }
-    
+
         toggleActionMenu(id);
     }
 
@@ -74,7 +73,7 @@ function TableActionMenu({id, isOpen, toggleActionMenu, fetchLogs, handleUpdated
                     <IconPencil stroke={2} />
                     <span>Edit</span>
                 </button>
-                <button onClick={() => deleteLog(id, toggleActionMenu, fetchLogs)} className="dropdown-menu-item" style={{border: 'none'}}>
+                <button onClick={() => deleteProcess(id, toggleActionMenu)} className="dropdown-menu-item" style={{border: 'none'}}>
                     <IconTrash stroke={2} />
                     <span>Delete</span>
                 </button>

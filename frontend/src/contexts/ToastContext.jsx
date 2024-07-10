@@ -8,9 +8,9 @@ export const useToast = () => useContext(ToastContext);
 export const ToastProvider = ({ children }) => {
     const [toasts, setToasts] = useState([]);
 
-    const addToast = useCallback((message, type = 'default') => {
+    const addToast = useCallback((heading, message, type = 'default') => {
         const id = Math.random().toString(36).substring(2, 9);
-        setToasts((prevToasts) => [...prevToasts, { id, message, type}]);
+        setToasts((prevToasts) => [...prevToasts, { id, heading, message, type}]);
     }, []);
 
     const removeToast = useCallback((id) => {
