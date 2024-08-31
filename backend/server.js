@@ -30,7 +30,8 @@ app.use('/api/logs', logRoutes);
 // Endpoint to load environment variables
 app.get('/api/config', (req, res) => {
     res.json({
-        openWeatherApiKey: process.env.OPENWEATHER_API_KEY
+        openWeatherApiKey: process.env.OPENWEATHER_API_KEY,
+        mapboxApiKey: process.env.MAPBOX_API_KEY
     });
 });
 
@@ -64,3 +65,9 @@ app.get('/api/fetch-data', async (req, res) => {
         res.status(500).json({error: error.message});
     }
 })
+
+
+
+
+
+

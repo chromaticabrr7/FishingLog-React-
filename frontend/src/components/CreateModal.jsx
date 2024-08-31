@@ -17,6 +17,7 @@ const schema = z.object({
 function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) {
     // const [initialValues, setInitialValues] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [buttonLabel, setButtonLabel] = useState('Submit');
     const addToast = useToast();
     const {
         register,
@@ -33,11 +34,21 @@ function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) 
         resolver: zodResolver(schema),
     });
 
+    const processButtonLabel = () => {
+        if (isUpdate !== null) {
+            setButtonLabel('Update');
+        } else {
+            setButtonLabel('Submit');
+        }
+    };
+
     const onSubmit = async (data) => {
         console.log('Form Data:', data);
         console.log('Attached ID is:', isUpdate);
 
         if (isUpdate !== null) {
+            setButtonLabel('Update');
+
             try {
                 const response = await updateLog(data, isUpdate);
                 if (response.ok) {
@@ -54,6 +65,8 @@ function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) 
                 console.error('Error submitting form', error);
             }
         } else {
+            setButtonLabel('Submit');
+
             try {
                 const response = await createLog(data);
                 if (response.ok) {
@@ -106,6 +119,7 @@ function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) 
         }
 
         findInitialValues();
+        processButtonLabel();
     }, [isUpdate, setValue]);
 
     const handleCancel = () => {
@@ -220,7 +234,7 @@ function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) 
                             </div>
                             <div className="footer-right">
                                 <button type='button' onClick={handleCancel} className="button-secondary-md font-medium" id="cancelBtn">Cancel</button>
-                                <button type='submit' className="button-primary-md font-medium" id="insertBtn">Submit</button>
+                                <button type='submit' className="button-primary-md font-medium" id="insertBtn">{buttonLabel}</button>
                             </div>
                         </div>
                     </form>

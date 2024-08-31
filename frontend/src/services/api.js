@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 // Grab all logs from database
 export const fetchLogs = async () => {

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import 'mapbox-gl/dist/mapbox-gl.css';
 @font-face {
   font-family: Geist Mono, monospace;
   src: url(./assets/fonts/GeistMonoVF.woff) format('woff');
@@ -209,6 +210,92 @@ p, h1, h2, h3, h4, h5, h6, th {
 #dialog {
   display: flex;
 }
+
+.view-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  bottom: 24px;
+  right: 24px;
+  left: 24px;
+  padding: 0 24px;
+  background-color: rgb(255, 255, 255, 0.8);
+  backdrop-filter: blur(2px);
+  overflow: visible;
+  opacity: 0;
+  scale: 1;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.view-modal-container {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1000px;
+  gap: 16px;
+  padding: 64px;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0px 0px 0px 1px rgb(0, 0, 0, 0.10), 0px 41.778px 33.422px 0px rgba(0, 0, 0, 0.04), 0px 22.336px 17.869px 0px rgba(0, 0, 0, 0.04), 0px 6.65px 5.32px 0px rgba(0, 0, 0, 0.02), 0px 2.767px 2.214px 0px rgba(0, 0, 0, 0.02);
+  transform: translateY(10%);
+  transition: transform 0.6s ease;
+  overflow: hidden;
+}
+
+.view-modal.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.view-modal.show .view-modal-container {
+  transform: translateY(0);
+}
+
+.view-modal-header-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  z-index: 5;
+}
+
+.view-modal-detail-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.species-grid {
+  display: flex;
+  width: 600px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.species-grid-item {
+  padding: 4px 12px;
+  background: black;
+  color: white;
+  border-radius: 6px;
+}
+
+/* MISC CONTAINER STYLES */
+.map-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 /* ALERT STYLES */
 
 .toast {
