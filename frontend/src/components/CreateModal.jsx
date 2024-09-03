@@ -108,7 +108,7 @@ function CreateModal({show, onClose, handleUpdatedData, setIsUpdate, isUpdate}) 
                             setValue('name', response.name);
                             setValue('latitude', response.latitude);
                             setValue('longitude', response.longitude);
-                            setValue('species', response.species);
+                            setValue('species', response.species.join(", "));
                         })
                         .catch(error => console.error('Error fetching data:', error))
                         .finally(() => setIsLoading(false));
